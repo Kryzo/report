@@ -1,0 +1,16 @@
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Data mining for music}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{CNSMDP and Project TICEL}{chapter.1}% 3
+\BOOKMARK [1][-]{section.1.3}{The SOL database}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.4}{Human interpretation and timber}{chapter.1}% 5
+\BOOKMARK [2][-]{subsection.1.4.1}{The mechanics of hearing}{section.1.4}% 6
+\BOOKMARK [2][-]{subsection.1.4.2}{The psychology of hearing}{section.1.4}% 7
+\BOOKMARK [1][-]{section.1.5}{What is known about timbre ?}{chapter.1}% 8
+\BOOKMARK [1][-]{section.1.6}{Defining the problem}{chapter.1}% 9
+\BOOKMARK [2][-]{subsection.1.6.1}{True labeling problem}{section.1.6}% 10
+\BOOKMARK [2][-]{subsection.1.6.2}{Ground truth labeling}{section.1.6}% 11
+\BOOKMARK [1][-]{section.1.7}{How we adressed the problem}{chapter.1}% 12
+\BOOKMARK [1][-]{section.1.8}{The ranking metrics}{chapter.1}% 13
+\BOOKMARK [2][-]{subsection.1.8.1}{Computing the distances}{section.1.8}% 14
+\BOOKMARK [2][-]{subsection.1.8.2}{The mean average precision}{section.1.8}% 15
+\BOOKMARK [2][-]{subsection.1.8.3}{The precision at k}{section.1.8}% 16

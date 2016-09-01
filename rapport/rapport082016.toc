@@ -1,0 +1,17 @@
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Data mining for music}{1}{section.1.1}
+\contentsline {section}{\numberline {1.2}CNSMDP and Project TICEL}{1}{section.1.2}
+\contentsline {section}{\numberline {1.3}The SOL database}{2}{section.1.3}
+\contentsline {section}{\numberline {1.4}Human interpretation and timber}{2}{section.1.4}
+\contentsline {subsection}{\numberline {1.4.1}The mechanics of hearing}{3}{subsection.1.4.1}
+\contentsline {subsection}{\numberline {1.4.2}The psychology of hearing}{4}{subsection.1.4.2}
+\contentsline {section}{\numberline {1.5}What is known about timbre ?}{4}{section.1.5}
+\contentsline {section}{\numberline {1.6}Defining the problem}{5}{section.1.6}
+\contentsline {subsection}{\numberline {1.6.1}True labeling problem}{5}{subsection.1.6.1}
+\contentsline {subsection}{\numberline {1.6.2}Ground truth labeling}{6}{subsection.1.6.2}
+\contentsline {section}{\numberline {1.7}How we adressed the problem}{6}{section.1.7}
+\contentsline {section}{\numberline {1.8}The ranking metrics}{7}{section.1.8}
+\contentsline {subsection}{\numberline {1.8.1}Computing the distances}{7}{subsection.1.8.1}
+\contentsline {subsection}{\numberline {1.8.2}The mean average precision}{7}{subsection.1.8.2}
+\contentsline {subsubsection}{Average precision}{7}{section*.3}
+\contentsline {subsection}{\numberline {1.8.3}The precision at k}{8}{subsection.1.8.3}
