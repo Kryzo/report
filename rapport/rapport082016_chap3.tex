@@ -272,10 +272,11 @@ Now that the LMNN has proven to be efficient for the musical search query proble
 
 \subsection{LMNN applied to optimize the acoustical description against perceptual judgments}
 
-To apply the LMNN to a series of multiple labeling opinion some alternation should be made. It should be noted that this problem was not addressed before. Many methods were proposed and tested to take advantage of the LMNN to make it adaptable to the problem : 
+To apply the LMNN to a series of multiple labelings some adaptation shall be made as, to the best of our knowledge this issue has not been addressed in the literature. Some methods are now proposed and tested to take advantage of the LMNN to optimize the acoustical description against perceptual judgments:
+ 
 \begin{enumerate}
 \item \textbf{Summing the distances} \par 
-The first method that was proposed is to sum over the distances. Two ways of summing the distances was used :\par The first one is to sum over the matrices L of projection obtained by the LMNN. To better understand the difference between this approach and summing directly the distances let us see the equations below : \\
+The first method that was proposed is to sum over the distances. Two ways of summing the distances was used :\par The first one is to sum directly over the resulting distances and the second is to sum over the matrices L of projection obtained by the LMNN. To better understand the difference between this approach and summing directly the distances let us see the equations below : \\
 Summing the projection matrices L can be written as :
 $$L=\sum_{k=1}^{nobs}L_k$$
 Thus the new distances will be :
@@ -284,7 +285,7 @@ Thus the new distances will be :
   $$=(\vec{x_i}-\vec{x_j})^T(\sum_{k=1,w=1,k=w}^{nobs}L_k^TL_w+\sum_{k=1,w=1,k\neq w}^{nobs}L_k^TL_w)(\vec{x_i}-\vec{x_j})$$
    $$=(\vec{x_i}-\vec{x_j})^T\sum_{k=1,w=1,k=w}^{nobs}L_k^TL_w(\vec{x_i}-\vec{x_j})+(\vec{x_i}-\vec{x_j})^T\sum_{k=1,w=1,k\neq w}^{nobs}L_k^TL_w(\vec{x_i}-\vec{x_j})$$
   $$\sum_{k=1}^{nobs}d_{M_k}(\vec{x_i}-\vec{x_j})+\sum_{k=1,w=1,k\neq w}^{nobs}(L_k\vec{x_i}-L_k\vec{x_j})^T(L_w\vec{x_i}-L_w\vec{x_j})\ \ eq.1$$
- The first part of eq.1 is the same as summing the distances directly, the second part however do not have a physical explanation. A sum over the distance is better understood. However a comparison is provided for further study since it achieved good results.
+ The first part of eq.1 is the same as summing the distances directly, the second part however do not have a physical explanation. A sum over the distance is better understood. However a comparison is provided for further study since it also achieved good results.
  
  \begin{table}[H]
 \begin{center} 
@@ -352,7 +353,7 @@ Now that we have formulated all the factors we can construct our new matrix base
 2d_{51}      & 2d_{52}  & 4d_{53}   & 2d_{54}  & 1
 \end{bmatrix}
 \]
-Let us now examine two cases, one were we have an agreement and one were we have a disagreement :
+Let us now examine two cases, one where we have an agreement and one were we have a disagreement :
 \begin{enumerate}
 \item Case were we have agreement between different opinions.\\
 It should be noted again that we are searching to compare distances and not the exact value of the distances. So let us take two distances were in the first both users agree that two samples belongs to the same class and in the other they agree that they don't.  for example we can take $d_{13} \ and \ d_{34}$. In the space before the application of LMNN we had : $d_{13}-d_{34}$ in the new space we will have a difference between a value that is twice bigger than the first distance and a value that is twice smaller than the second distance. So we have been able to have a space that make the difference in distances bigger if we have two exact opinions on labeling. And for both labeling opinions the error will be minimized.
@@ -360,8 +361,8 @@ It should be noted again that we are searching to compare distances and not the 
 Let us take again distance $d_13$ but this time let us compare it with $d_21$. Let us take F as a value that is bigger than 1 to represent the factor by which in the new space the distance between samples 1 and 3 is bigger. we will thus have in the new space $2Fd_{13}-2Ad_{d21}$. We now that the first distance is going to be bigger than the original distance between samples 1 and 2. On the other hand the distance between 1 and 2 in the new space will depend on the original distance between 1 and 2. So if the distance in the new space is smaller than in the original space, labeling based on first user will have smaller error than labeling based on second user. But since the first factor is well optimized we will have optimization in both case. \\
 This idea that the "winner" between the two opinion is based on the representation in the original space is very important. And it will be essential in a case were we have more than two opinions, since the probability that two samples will be considered similar by the users is related to the physical aspect of the sound. 
  \end{enumerate}
- \item \textbf{Pondering the sum over distances} \par 
-In this case, the sum has been preponderated based on a factor of success of each labeling opinion relatively to the other labeling opinions. The success is based on a precision factor obtained by applying the normalized mutual information. The distances will thus be multiplied each one by the precision of the labeling opinion over the entire labeling opinion space. The results are as follows :
+ \item \textbf{Pondering \ml{replace by weigthing} the sum over distances} \par 
+In this case, the sum has been preponderated based on a factor of relevance of each labeling opinion relatively to the other labeling opinions. The success is based on a precision factor obtained by applying the normalized mutual information (NMI) \ml{provide citation}. The distances will thus be multiplied each one by the precision of the labeling opinion over the entire labeling opinion space. The results are as follows :
 \begin{table} [H]
 \begin{center} 
 \ 
@@ -403,7 +404,7 @@ scattering & normalized pondered distance sum  & 40.17 & 54.30 & 44.01 & 67.63 \
 \end{table}  
  Normalizing before effecting the sum proved to be beneficial for the scattering and not for the MFCC. This is due to the high conventionality of the scattering that might have an affect over the distances. This effect will be reduced by applying a normalization over the distances.
  \item \textbf{Class Matching} \par 
- The last method that was tested is to apply a class matching over the space of different observation. This is done using the NMI(normalized mutual information) technique. After matching the space of opinions, all the classes will be well aligned. Now using a majority vote over the space of observations, only one label will obtained. The LMNN will be thus trained only once on the obtained labeling. This will induce a shorter amount of training time and a faster algorithm. The results are given in the following table : 
+ The last method that was tested is to apply a class matching over the space of different observation. This is done using the NMI(normalized mutual information) technique. After matching the space of opinions, all the classes will be well aligned. Now using a majority vote over the space of observations, only one set of labels will obtained. The LMNN will be thus trained only once on the obtained labeling. This will induce a shorter amount of training time and a faster algorithm. The results are given in the following table : 
  \begin{table}[H] 
 \begin{center} 
 \ 
@@ -423,7 +424,8 @@ The class matching proved to be beneficial for the MFCC over the sum of distance
 
 \section{Conclusion}
 This paper provided a study of two problems of music search query. The first one based on the physical aspect of the sound. The results obtained for this part and the preprocessing technique for the scattering are novel work. The precision obtained on the search query for musical purposes proved that the standard deviation of the scattering should be studied in order to achieve state of the art results. This technique of preprocessing should be tested for different problems in the domain of audio and images.
-In the second part, the problem of studying multiple user opinion in order to find a space that respects all the opinions was addressed. This novelty work has put some new foundation for solving the problem.
+In the second part, the problem of studying multiple user opinion in order to find a space that respects all the opinions was addressed. This novel work has studied interesting research avenues for solving the problem.
+
 \newpage
 \begin{thebibliography}{2}
 \bibitem{B00} 
