@@ -22,13 +22,18 @@
 %for tables
 \newcommand{\bigcell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
 
+\newcommand{\ml}[1]{\textcolor{blue}{ Mathieu : #1}}
+
 \begin{document}
-\chapter{The ground truth labeling problem}
+\chapter{Optimizing an acoustical representation against perceptual judgments}
 \section{Introduction}
-In this second part of the study, 78 samples are taken from the entire database. The true labeling based on the physical knowledge of the samples is discarded. The new set of labels is provided by a ground truth study performed on 32 subjects. Each subject gave different labels based on his opinion on which two samples are being played by the same instrument. \par
+
+\ml{AGAIN, USE PRESENT TIME !!}
+
+In this second part of the study, 78 samples are selected from the SOL database and labeled using a perceptual study performed with 32 subjects. Each subject gave different labels based on her/his opinion on which two samples are similar or not. \par
 \begin{enumerate}
 \item \textbf{Feature extraction} \par
-In this part, the same feature extraction method will be applied to the samples. The MFCC will be extracted and then the standardization will be applied. For the scattering The features will be extracted and then the std and median method of preprocessing will be applied.
+In this part, the same feature extraction method will be applied to the samples. The MFCC will be extracted and then the standardization will be applied. For the scattering, the features will be extracted and then the std and median method of preprocessing will be applied.
 
 
 
@@ -37,9 +42,8 @@ In this part, the same feature extraction method will be applied to the samples.
 To start the study of this method, the two ranking metrics used in the first part should be generalized. The new MAP and P@5 that are used are obtained in the following way :
  \begin{itemize}
 \item Compute the metric ranking for each label provided by each subject.
-\item Compute the average of the ranking metrics over the 32 subjects.
+\item Compute the average of the ranking metrics over the 32 set of labels corresponding to each subject.
 \end{itemize}
-
 
 \item \textbf{Results.}
 
@@ -56,7 +60,7 @@ scattering & 40.17 & 44.01  \\
 \hline
 \end{tabular} 
 \end{center} 
-\caption{Results of applying the MFCC and the scattering to the ground truth labeling problem} 
+\caption{Results of applying the MFCC and the scattering to the perpectual mapping.} 
 \label{ground truth} 
 \end{table}
 \end{enumerate}
@@ -64,12 +68,18 @@ scattering & 40.17 & 44.01  \\
 The table shows the results of the ranking metrics applied to the features extracted using the MFCC and the scattering. The MFCC outperforms the scattering even with the preprocessing applied.
 
 \section{Metric learning}
-In the first part of the study, the problem was treated without the need of methods of learning. In this part however, the problem is more complicated. This complication is due to the fact that there are factors that affects the decision of each subject.  Those factors are based on the cabling of the neurons inside the brain. Those cabling are established for each subject differently  based on how he experienced those sounds. The problem is to find a space that is not just representative to the physical aspect of sound but that takes into account the opinion of different subjects. This problem would be very complicated to solve without considering techniques of learning. 
+
+In the first part of the study, the problem was treated without the need of methods of learning. In this part however, the problem is more complicated as labelings are established for each subject differently  based on how she/he experiences those sounds. The problem is to find a space that is not just representative to the physical aspect of the sound but that takes into account the opinion of different subjects. This problem would be very complicated to solve without considering techniques of learning. 
+
+\ml{Bravo, tres bien ecrit ! sers t'n pour ta presentation}
+
 \subsection{K-NN vs search query}
-For each query, the space of interest is closest five samples. This evaluation indicates that beyond those 5 samples, there is no change of precision based on the accuracy of those samples. Thus the evaluation of a search query is highly related to the k nearest neighbors classification.\\
+For each query, the space of interest are the closest five samples. This evaluation indicates that beyond those 5 samples, there is no change of precision based on the accuracy of those samples. Thus the evaluation of a search query is highly related to the k nearest neighbors classification.\\
 In a k nearest neighbors classification, the euclidean distance is computed between each new sample and the entire samples of the space. For each new sample, a decision is made based on the classes of the the five nearest neighbors. If the majority of the nearest neighbors correspond to a certain class, the new sample will be assigned this class.\\
 In both cases (K-NN and search query), an ideal case is that the k nearest neighbor of each sample corresponds to the real class of that sample. However in the K-NN classifier, it is enough to have the majority of the samples assigned with the exact class of the sample where in the search query it is needed to have the k first results from the same class of the search query.\par
-The LMNN short for "Large Margin Nearest Neighbor" is a learning method designed to solve the K-NN classification problem. Its concept however is well suited for the problem of search query addressed in this paper.
+The LMNN short for "Large Margin Nearest Neighbor" is a learning method designed to optimize the K-NN classification problem. Its concept however is well suited for the problem of search query addressed in this paper.
+
+\ml{pas clair, bien explique la procedure du LMNN, optimisation supervisée de l'espace de description par reprojection}
 
 \subsection{Large Margin Nearest Neighbors}
 \begin{figure}[t!]
@@ -83,10 +93,10 @@ The learning technique that is considered in this paper is the large margin near
 \begin{itemize}
 \item Compute the pair wise Euclidean distance of the space.
 \item Attract the K nearest neighbors corresponding to the same class(Shrink the distance between the observation and the k nearest corresponding to the same class).
-\item Set a marge based on the farthest nearest neighbor from the same class.
-\item Push all observations from different classes outside this marge(expand the distance between the observation and other samples that violate the margin.)
+\item Set a margin based on the farthest nearest neighbor from the same class.
+\item Push all observations from different classes outside this margin (expand the distance between the observation and other samples that violate the margin.)
 \end{itemize}
-To better understand this idea, let us have a look at the following example in figure \ref{LMNN}. Consider a space of five samples that are divided in two classes. The blue class corresponds to samples played by a violin and the yellow class corresponds to samples played by a guitar. Let us focus on the effect of applying LMNN on the blue sample at the center. The settings of the LMNN will be tuned to a problem of three nearest neighbors classification. As showed in the first part of the figure \ref{LMNN}  that the three nearest neighbors to the blue sample in the middle are as follows : [Violin, Guitar, Violin]. The LMNN algorithm will thus aims to attract the two other samples that correspond to the violin class. To insure that the guitar will not be one of the nearest neighbors of that sample a margin will be set and the yellow sample should be pushed outside the margin. If the LMNN is applied with success the result will be similar to the second part of the figure \ref{LMNN}. The same process will be applied to each sample of the space.
+To better understand this idea, let us have a look at the following example in figure \ref{LMNN}. Consider a space of five samples that are divided in two classes. The blue class corresponds to samples played by a violin and the yellow class corresponds to samples played by a guitar. Let us focus on the effect of applying LMNN on the blue sample at the center. The settings of the LMNN will be tuned to a problem of three nearest neighbors classification. As showed in the first part of the figure \ref{LMNN}  that the three nearest neighbors to the blue sample in the middle are as follows : [Violin, Guitar, Violin]. The LMNN algorithm will thus aims to attract the two other samples that correspond to the violin class. To ensure that the guitar will not be one of the nearest neighbors of that sample a margin will be set and the yellow sample should be pushed outside the margin. If the LMNN is applied with success the result will be similar to the second part of the figure \ref{LMNN}. The same process will be applied to each sample of the space.
 \subsubsection{Learning a Mahalanobis distance}
 To perform the process explained above, the LMNN uses a projection of the space by computing a Mahalanobis distance. A Mahalanobis distance is defined as follows  : $$D_\textbf{M}(\vec{x_i},\vec{x_j})=(\vec{x_i}-\vec{x_j})^T\textbf{M}(\vec{x_i}-\vec{x_j})$$
 By considering M as  a positive semidefinite matrix M can be decomposed as follows : $$M=L^TL$$. Thus the Mahalanobis distance can be looked at as being a projection from an euclidean space to another euclidean space using the operator L : $$D_\textbf{L}(\vec{x_i},\vec{x_j})=||\textbf{L}(\vec{x_i}-\vec{x_j})||$$. By using this projection, the same process can be applied to obtain the ranking metrics (MAP and P@5).
@@ -117,7 +127,7 @@ $\epsilon(L)=(1-\mu)\epsilon_{pull(L)}+\mu \epsilon_{push}(L) $
 
 Once the optimization problem is solved, The result will be the matrix L which will project the observations into a space that will better represent the data. Before applying the LMNN to the ground truth labeling problem, it will be applied to the true labeling problem to test its effect on the musical space for features extracted using the MFCC and the scattering.
 
-\subsection{LMNN applied to the true labeling problem}
+\subsection{LMNN applied to optimize the acoustical description agains physical labels}
 After preprocessing the data in the MFCC and the scattering space, the LMNN will be applied. At first the data will not be divided into a part for training and a part for testing. Rather the application of the LMNN will be on the hole data set and the results will be also on the hole data set.
 \begin{table} [H]
 \begin{center} 
@@ -151,6 +161,8 @@ scattering & 57.98 & 88.08  \\
 
 The first table shows the comparison between the P@5 before and after applying the LMNN. An improvement is noted for all the different type of classes for both features extracted using the MFCC and the scattering. The scattering continue to outperform the MFCC after the LMNN. For the two type instruments the scattering after the LMNN gives almost a perfect result. And for the last type of classes of playing techniques, the scattering after gives a remarkable improvement of 30.1\%.
 
+\ml{tres bien les commentaires}
+
   \begin{table} [H]
 \begin{center} 
 \ 
@@ -181,7 +193,7 @@ scattering &20.41& 44.42  \\
 \label{you} 
 \end{table}
 Again for the MAP, The scattering continues to outperform the MFCC. with a big improvement after applying the LMNN. This shows that the scattering contains the necessary variability for the problem of music search query.\par
-To further show the importance of the LMNN, two division of train test is made on the space and the results are shown in the following tables for the 32 class of instrument with variation:
+To further show the importance of the LMNN, two division of train / test datasets are made  and the results are shown in the following tables for the 32 class of instrument with variation:
 \begin{table} [H]
 \begin{center} 
 \ 
@@ -257,7 +269,9 @@ scattering & 28.43 & 51.35 & 92.85 & 99.85  \\
 \end{table} 
 The results shown in the table above were anticipated. The scattering transform outperformed the MFCC after applying the LMNN even when the space of MFCC features was expended. The MFCC precision degraded with the additional features. The LMNN could not rise the precision of the MFCC even with a high space of features.\par 
 Now that the LMNN has proven to be efficient for the musical search query problem based on the physical labeling of the observation, it is time to see its effect on the ground truth problem.
-\subsection{LMNN applied to the ground truth problem}
+
+\subsection{LMNN applied to optimize the acoustical description against perceptual judgments}
+
 To apply the LMNN to a series of multiple labeling opinion some alternation should be made. It should be noted that this problem was not addressed before. Many methods were proposed and tested to take advantage of the LMNN to make it adaptable to the problem : 
 \begin{enumerate}
 \item \textbf{Summing the distances} \par 
